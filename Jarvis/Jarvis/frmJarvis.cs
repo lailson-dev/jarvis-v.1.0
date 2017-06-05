@@ -15,6 +15,7 @@ namespace Jarvis
     public partial class frmJarvis : Form
     {
         private SpeechRecognitionEngine engine; //Engine de reconhecimento
+        private bool IsJarvisListening = true;
 
         public frmJarvis()
         {
@@ -32,12 +33,14 @@ namespace Jarvis
                 Choices c_commandsOfSystem = new Choices();
                 c_commandsOfSystem.Add(GrammarRules.WhatTimeIS.ToArray()); //Que horas são?
                 c_commandsOfSystem.Add(GrammarRules.WhatDateIs.ToArray()); //Que data é hoje?
+                c_commandsOfSystem.Add(GrammarRules.JarvisStartListening.ToArray()); //Chama o jarvis
+                c_commandsOfSystem.Add(GrammarRules.JarvisStopListening.ToArray()); //Para o jarvis
 
                 GrammarBuilder gb_commandsOfSystem = new GrammarBuilder();
                 gb_commandsOfSystem.Append(c_commandsOfSystem);
 
                 Grammar g_commandsOfSystem = new Grammar(gb_commandsOfSystem);
-                g_commandsOfSystem.Name = "sys";                
+                g_commandsOfSystem.Name = "sys";
 
                 //Carregamento da gramática
                 //engine.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(words))));
@@ -74,15 +77,30 @@ namespace Jarvis
             if (conf > 0.35f)
             {
                 this.label1.ForeColor = Color.ForestGreen;
-                switch (e.Result.Grammar.Name)
+
+                if (GrammarRules.JarvisStopListening.Any(x => x == speech))
                 {
-                    case "sys":
-                        // Se speech(a fala) for igual a que horas são, ou o que estiver escrito na lista
-                        if (GrammarRules.WhatTimeIS.Any(x => x == speech))
-                            Runner.WhatTimeIs();
-                        else if (GrammarRules.WhatDateIs.Any(x => x == speech))
-                            Runner.WhatDateIs();
-                        break;
+                    IsJarvisListening = false;
+                    Speaker.Speak("Você que manda patrão.");
+                }
+                else
+                {
+                    IsJarvisListening = true;
+                    Speaker.Speak("Diga ai patrão.");
+                }
+
+                if (IsJarvisListening == true)
+                {
+                    switch (e.Result.Grammar.Name)
+                    {
+                        case "sys":
+                            // Se speech(a fala) for igual a que horas são, ou o que estiver escrito na lista
+                            if (GrammarRules.WhatTimeIS.Any(x => x == speech))
+                                Runner.WhatTimeIs();
+                            else if (GrammarRules.WhatDateIs.Any(x => x == speech))
+                                Runner.WhatDateIs();
+                            break;
+                    }
                 }
             }
         }
