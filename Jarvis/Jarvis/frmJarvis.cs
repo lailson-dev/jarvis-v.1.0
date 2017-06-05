@@ -35,9 +35,13 @@ namespace Jarvis
 
                 //Evento do reconhecimento
                 engine.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(rec);
+                //Nível do audio
+                engine.AudioLevelUpdated += new EventHandler<AudioLevelUpdatedEventArgs>(audioLevel);
 
                 //Inicia o reconhecimento
                 engine.RecognizeAsync(RecognizeMode.Multiple);
+
+                Speaker.Speak("Estou carregando os arquivos.");
             }
             catch (Exception ex)
             {
@@ -54,6 +58,13 @@ namespace Jarvis
         private void rec(object s, SpeechRecognizedEventArgs e)
         {
             MessageBox.Show(e.Result.Text);
+        }
+
+        //Método do nível de áudio
+        private void audioLevel(object s, AudioLevelUpdatedEventArgs e)
+        {
+            this.progressBar1.Maximum = 100;
+            this.progressBar1.Value = e.AudioLevel;
         }
     }
 }

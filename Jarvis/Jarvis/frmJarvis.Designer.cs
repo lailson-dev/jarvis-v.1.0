@@ -28,13 +28,22 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.SuspendLayout();
+            // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(234, 215);
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(211, 23);
+            this.progressBar1.TabIndex = 0;
             // 
             // frmJarvis
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(688, 261);
+            this.Controls.Add(this.progressBar1);
             this.MaximizeBox = false;
             this.Name = "frmJarvis";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -45,6 +54,8 @@
         }
 
         #endregion
+
+        private System.Windows.Forms.ProgressBar progressBar1;
     }
 }
 
