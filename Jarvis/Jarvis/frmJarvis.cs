@@ -28,10 +28,19 @@ namespace Jarvis
                 engine = new SpeechRecognitionEngine();
                 engine.SetInputToDefaultAudioDevice(); //Entrada de microfone
 
-                string[] words = { "Olá", "Boa noite" };
+                //Parte da gramática
+                Choices c_commandsOfSystem = new Choices();
+                c_commandsOfSystem.Add(GrammarRules.WhatTimeIS.ToArray()); //Que horas são?
+
+                GrammarBuilder gb_commandsOfSystem = new GrammarBuilder();
+                gb_commandsOfSystem.Append(c_commandsOfSystem);
+
+                Grammar g_commandsOfSystem = new Grammar(gb_commandsOfSystem);
+                g_commandsOfSystem.Name = "sys";                
 
                 //Carregamento da gramática
-                engine.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(words))));
+                //engine.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(words))));
+                engine.LoadGrammar(g_commandsOfSystem);
 
                 //Evento do reconhecimento
                 engine.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(rec);
@@ -57,7 +66,20 @@ namespace Jarvis
         //Método chamado quando algo é reconhecido
         private void rec(object s, SpeechRecognizedEventArgs e)
         {
-            MessageBox.Show(e.Result.Text);
+            string speech = e.Result.Text; //String reconhecida
+            float conf = e.Result.Confidence; //Confiança
+
+            if (conf > 0.35f)
+            {
+                switch (e.Result.Grammar.Name)
+                {
+                    case "sys":
+                        // Se speech(a fala) for igual a que horas são, ou o que estiver escrito na lista
+                        if (GrammarRules.WhatTimeIS.Any(x => x == speech))
+                            Runner.WhatTimeIs();
+                        break;
+                }
+            }
         }
 
         //Método do nível de áudio
