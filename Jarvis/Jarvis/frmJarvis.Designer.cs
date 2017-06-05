@@ -39,6 +39,7 @@
             this.Name = "frmJarvis";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Jarvis v.1.0 - Lailson Conceição";
+            this.Load += new System.EventHandler(this.frmJarvis_Load);
             this.ResumeLayout(false);
 
         }
