@@ -32,13 +32,16 @@ namespace Jarvis
         {
             try
             {
+                Speak("Estou carregando os arquivos.");
+
+
                 engine = new SpeechRecognitionEngine();
                 engine.SetInputToDefaultAudioDevice(); //Entrada de microfone
 
                 //Parte da gramática
                 Choices cNumbers = new Choices();
 
-                for (int i = 0; i <= 100; i++)
+                for(int i = 0; i <= 100; i++)
                     cNumbers.Add(i.ToString());
 
 
@@ -60,7 +63,7 @@ namespace Jarvis
 
                 GrammarBuilder gbNumber = new GrammarBuilder();
                 gbNumber.Append(cNumbers);
-                gbNumber.Append(new Choices("vezes", "mais", "menos", "por"));
+                gbNumber.Append(new Choices("vezes", "por", "mais", "menos"));
                 gbNumber.Append(cNumbers);
 
                 Grammar gNumber = new Grammar(gbNumber);
@@ -84,9 +87,7 @@ namespace Jarvis
                 synthesizer.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(speakProgress);
                 #endregion
                 //Inicia o reconhecimento
-                engine.RecognizeAsync(RecognizeMode.Multiple);
-
-                Speak("Estou carregando os arquivos.");
+                engine.RecognizeAsync(RecognizeMode.Multiple);                
             }
             catch (Exception ex)
             {
@@ -184,6 +185,7 @@ namespace Jarvis
         private void rej(object s, SpeechRecognitionRejectedEventArgs e)
         {
             this.LblVoce.ForeColor = Color.Red;
+            Speak("Desculpa, não entendi.");
         }
 
         private void MinimizeWindow()

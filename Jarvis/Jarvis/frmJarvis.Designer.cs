@@ -49,9 +49,9 @@
             this.LblVoce.ForeColor = System.Drawing.SystemColors.ActiveBorder;
             this.LblVoce.Location = new System.Drawing.Point(12, 18);
             this.LblVoce.Name = "LblVoce";
-            this.LblVoce.Size = new System.Drawing.Size(98, 19);
+            this.LblVoce.Size = new System.Drawing.Size(104, 19);
             this.LblVoce.TabIndex = 1;
-            this.LblVoce.Text = "Reconhecido";
+            this.LblVoce.Text = "Reconhecido:";
             // 
             // LblJarvis
             // 
