@@ -55,6 +55,12 @@
     <Compile Include="frmJarvis.Designer.cs">
       <DependentUpon>frmJarvis.cs</DependentUpon>
     </Compile>
+    <Compile Include="frmSelectVoice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frmSelectVoice.Designer.cs">
+      <DependentUpon>frmSelectVoice.cs</DependentUpon>
+    </Compile>
     <Compile Include="GrammarRules.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +68,9 @@
     <Compile Include="Speaker.cs" />
     <EmbeddedResource Include="frmJarvis.resx">
       <DependentUpon>frmJarvis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frmSelectVoice.resx">
+      <DependentUpon>frmSelectVoice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

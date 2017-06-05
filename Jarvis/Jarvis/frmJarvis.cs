@@ -16,6 +16,7 @@ namespace Jarvis
     {
         private SpeechRecognitionEngine engine; //Engine de reconhecimento
         private bool IsJarvisListening = true;
+        private frmSelectVoice selectVoice = null;
 
         public frmJarvis()
         {
@@ -37,6 +38,7 @@ namespace Jarvis
                 c_commandsOfSystem.Add(GrammarRules.JarvisStopListening.ToArray()); //Para o jarvis
                 c_commandsOfSystem.Add(GrammarRules.MinimizeWindow.ToArray());//Minimizar a janela
                 c_commandsOfSystem.Add(GrammarRules.NormalWindow.ToArray());//Janela em tamanho normal
+                c_commandsOfSystem.Add(GrammarRules.ChangeVoice.ToArray());//Altera a voz
 
                 GrammarBuilder gb_commandsOfSystem = new GrammarBuilder();
                 gb_commandsOfSystem.Append(c_commandsOfSystem);
@@ -79,6 +81,7 @@ namespace Jarvis
             if (conf > 0.35f)
             {
                 this.label1.ForeColor = Color.ForestGreen;
+                this.label1.Text = "Reconhecido: " + speech;
 
                 if (GrammarRules.JarvisStopListening.Any(x => x == speech))
                 {
@@ -105,6 +108,12 @@ namespace Jarvis
                                 MinimizeWindow();
                             else if (GrammarRules.NormalWindow.Any(x => x == speech))
                                 NormalWindow();
+                            else if (GrammarRules.ChangeVoice.Any(x => x == speech))
+                            {
+                                if (selectVoice == null || selectVoice.IsDisposed == true)
+                                    selectVoice = new frmSelectVoice();
+                                selectVoice.Show();
+                            }
                             break;
                     }
                 }
