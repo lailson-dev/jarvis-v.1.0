@@ -36,7 +36,14 @@ namespace Jarvis
                 engine.SetInputToDefaultAudioDevice(); //Entrada de microfone
 
                 //Parte da gramática
+                Choices cNumbers = new Choices();
+
+                for (int i = 0; i <= 100; i++)
+                    cNumbers.Add(i.ToString());
+
+
                 Choices c_commandsOfSystem = new Choices();
+                
                 c_commandsOfSystem.Add(GrammarRules.WhatTimeIS.ToArray()); //Que horas são?
                 c_commandsOfSystem.Add(GrammarRules.WhatDateIs.ToArray()); //Que data é hoje?
                 c_commandsOfSystem.Add(GrammarRules.JarvisStartListening.ToArray()); //Chama o jarvis
@@ -46,14 +53,23 @@ namespace Jarvis
                 c_commandsOfSystem.Add(GrammarRules.ChangeVoice.ToArray());//Altera a voz
 
                 GrammarBuilder gb_commandsOfSystem = new GrammarBuilder();
-                gb_commandsOfSystem.Append(c_commandsOfSystem);
+                gb_commandsOfSystem.Append(c_commandsOfSystem);                
 
                 Grammar g_commandsOfSystem = new Grammar(gb_commandsOfSystem);
                 g_commandsOfSystem.Name = "sys";
 
+                GrammarBuilder gbNumber = new GrammarBuilder();
+                gbNumber.Append(cNumbers);
+                gbNumber.Append(new Choices("vezes", "mais", "menos", "por"));
+                gbNumber.Append(cNumbers);
+
+                Grammar gNumber = new Grammar(gbNumber);
+                gNumber.Name = "calculo";
+
                 //Carregamento da gramática
                 //engine.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(words))));
                 engine.LoadGrammar(g_commandsOfSystem);
+                engine.LoadGrammar(gNumber);
 
                 #region SpeechRecognition Events
                 //Evento do reconhecimento
@@ -126,6 +142,9 @@ namespace Jarvis
                                     selectVoice = new frmSelectVoice();
                                 selectVoice.Show();
                             }
+                            break;
+                        case "calculo":
+                            Speak(CalcSolver.Solve(speech));
                             break;
                     }
                 }
