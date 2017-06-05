@@ -31,6 +31,7 @@ namespace Jarvis
                 //Parte da gramática
                 Choices c_commandsOfSystem = new Choices();
                 c_commandsOfSystem.Add(GrammarRules.WhatTimeIS.ToArray()); //Que horas são?
+                c_commandsOfSystem.Add(GrammarRules.WhatDateIs.ToArray()); //Que data é hoje?
 
                 GrammarBuilder gb_commandsOfSystem = new GrammarBuilder();
                 gb_commandsOfSystem.Append(c_commandsOfSystem);
@@ -79,6 +80,8 @@ namespace Jarvis
                         // Se speech(a fala) for igual a que horas são, ou o que estiver escrito na lista
                         if (GrammarRules.WhatTimeIS.Any(x => x == speech))
                             Runner.WhatTimeIs();
+                        else if (GrammarRules.WhatDateIs.Any(x => x == speech))
+                            Runner.WhatDateIs();
                         break;
                 }
             }
