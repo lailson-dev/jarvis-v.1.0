@@ -8,13 +8,18 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Microsoft.Speech.Recognition; //Namespace do projeto
+//Namespaces do projeto
+using Microsoft.Speech.Recognition;
+using System.Speech.Synthesis;
 
 namespace Jarvis
 {
     public partial class frmJarvis : Form
     {
         private SpeechRecognitionEngine engine; //Engine de reconhecimento
+        private SpeechSynthesizer synthesizer = new SpeechSynthesizer(); //sintetizador
+
+
         private bool IsJarvisListening = true;
         private frmSelectVoice selectVoice = null;
 
@@ -50,16 +55,22 @@ namespace Jarvis
                 //engine.LoadGrammar(new Grammar(new GrammarBuilder(new Choices(words))));
                 engine.LoadGrammar(g_commandsOfSystem);
 
+                #region SpeechRecognition Events
                 //Evento do reconhecimento
                 engine.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(rec);
                 //Nível do audio
                 engine.AudioLevelUpdated += new EventHandler<AudioLevelUpdatedEventArgs>(audioLevel);
                 engine.SpeechRecognitionRejected += new EventHandler<SpeechRecognitionRejectedEventArgs>(rej);
+                #endregion
 
+                #region
+                synthesizer.SpeakStarted += new EventHandler<SpeakStartedEventArgs>(speakStarted);
+                synthesizer.SpeakProgress += new EventHandler<SpeakProgressEventArgs>(speakProgress);
+                #endregion
                 //Inicia o reconhecimento
                 engine.RecognizeAsync(RecognizeMode.Multiple);
 
-                Speaker.Speak("Estou carregando os arquivos.");
+                Speak("Estou carregando os arquivos.");
             }
             catch (Exception ex)
             {
@@ -69,7 +80,8 @@ namespace Jarvis
 
         private void frmJarvis_Load(object sender, EventArgs e)
         {
-            LoadSpeech();
+            LoadSpeech();            
+            Speak("Já carreguei os arquivos, estou pronto.");
         }
 
         //Método chamado quando algo é reconhecido
@@ -80,18 +92,18 @@ namespace Jarvis
 
             if (conf > 0.35f)
             {
-                this.label1.ForeColor = Color.ForestGreen;
-                this.label1.Text = "Reconhecido: " + speech;
+                this.LblVoce.ForeColor = Color.ForestGreen;
+                this.LblVoce.Text = "Reconhecido: " + speech;
 
                 if (GrammarRules.JarvisStopListening.Any(x => x == speech))
                 {
                     IsJarvisListening = false;
-                    Speaker.Speak("Você que manda patrão.");
+                    Speak("Você que manda patrão.", "Tchau");
                 }
-                else
+                else if (GrammarRules.JarvisStartListening.Any(x => x == speech))
                 {
                     IsJarvisListening = true;
-                    Speaker.Speak("Diga ai patrão.");
+                    Speak("Diga ai patrão.", "Opa, estou aqui.");
                 }
 
                 if (IsJarvisListening == true)
@@ -120,6 +132,29 @@ namespace Jarvis
             }
         }
 
+        #region Speak Methods
+        private void Speak(string text)
+        {
+            synthesizer.SpeakAsync(text);
+        }
+
+        private void Speak(params string[] texts)
+        {
+            Random r = new Random();
+            Speak(texts[r.Next(0, texts.Length)]);
+        }
+
+        private void speakStarted(object s, SpeakStartedEventArgs e)
+        {
+            LblJarvis.Text = "Jarvis: ";
+        }
+
+        private void speakProgress(object s, SpeakProgressEventArgs e)
+        {
+            LblJarvis.Text += e.Text + " ";
+        }
+        #endregion
+
         //Método do nível de áudio
         private void audioLevel(object s, AudioLevelUpdatedEventArgs e)
         {
@@ -129,7 +164,7 @@ namespace Jarvis
 
         private void rej(object s, SpeechRecognitionRejectedEventArgs e)
         {
-            this.label1.ForeColor = Color.Red;
+            this.LblVoce.ForeColor = Color.Red;
         }
 
         private void MinimizeWindow()
@@ -137,11 +172,11 @@ namespace Jarvis
             if (this.WindowState == FormWindowState.Normal || this.WindowState == FormWindowState.Maximized)
             {
                 this.WindowState = FormWindowState.Minimized;
-                Speaker.Speak("Minimizando a janela", "Como quiser", "Feito", "Você que manda meu patrão.");
+                Speak("Minimizando a janela", "Como quiser", "Feito", "Você que manda meu patrão.");
             }
             else
             {
-                Speaker.Speak("A já está minimizada.", "Já minimizei a janela", "Já fiz isso");
+                Speak("A já está minimizada.", "Já minimizei a janela", "Já fiz isso");
             }
         }
 
@@ -150,10 +185,10 @@ namespace Jarvis
             if (this.WindowState == FormWindowState.Minimized)
             {
                 this.WindowState = FormWindowState.Normal;
-                Speaker.Speak("Na tela", "Feito");
+                Speak("Na tela", "Feito");
             }
             else
-                Speaker.Speak("A janela já está em tamanho normal", "Já fiz isso", "Isso já foi feito");
+                Speak("A janela já está em tamanho normal", "Já fiz isso", "Isso já foi feito");
         }
     }
 }

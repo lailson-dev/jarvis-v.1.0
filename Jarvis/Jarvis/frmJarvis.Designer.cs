@@ -30,7 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmJarvis));
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.label1 = new System.Windows.Forms.Label();
+            this.LblVoce = new System.Windows.Forms.Label();
+            this.LblJarvis = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // progressBar1
@@ -40,17 +41,29 @@
             this.progressBar1.Size = new System.Drawing.Size(108, 23);
             this.progressBar1.TabIndex = 0;
             // 
-            // label1
+            // LblVoce
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Transparent;
-            this.label1.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.SystemColors.ActiveBorder;
-            this.label1.Location = new System.Drawing.Point(12, 18);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(104, 19);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Reconhecido:";
+            this.LblVoce.AutoSize = true;
+            this.LblVoce.BackColor = System.Drawing.Color.Transparent;
+            this.LblVoce.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblVoce.ForeColor = System.Drawing.SystemColors.ActiveBorder;
+            this.LblVoce.Location = new System.Drawing.Point(12, 18);
+            this.LblVoce.Name = "LblVoce";
+            this.LblVoce.Size = new System.Drawing.Size(98, 19);
+            this.LblVoce.TabIndex = 1;
+            this.LblVoce.Text = "Reconhecido";
+            // 
+            // LblJarvis
+            // 
+            this.LblJarvis.AutoSize = true;
+            this.LblJarvis.BackColor = System.Drawing.Color.Transparent;
+            this.LblJarvis.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.LblJarvis.ForeColor = System.Drawing.SystemColors.ActiveBorder;
+            this.LblJarvis.Location = new System.Drawing.Point(12, 47);
+            this.LblJarvis.Name = "LblJarvis";
+            this.LblJarvis.Size = new System.Drawing.Size(60, 19);
+            this.LblJarvis.TabIndex = 2;
+            this.LblJarvis.Text = "Jarvis: ";
             // 
             // frmJarvis
             // 
@@ -59,7 +72,8 @@
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.ClientSize = new System.Drawing.Size(683, 308);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.LblJarvis);
+            this.Controls.Add(this.LblVoce);
             this.Controls.Add(this.progressBar1);
             this.MaximizeBox = false;
             this.Name = "frmJarvis";
@@ -74,7 +88,8 @@
         #endregion
 
         private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label LblVoce;
+        private System.Windows.Forms.Label LblJarvis;
     }
 }
 
