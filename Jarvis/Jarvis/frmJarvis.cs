@@ -35,6 +35,8 @@ namespace Jarvis
                 c_commandsOfSystem.Add(GrammarRules.WhatDateIs.ToArray()); //Que data é hoje?
                 c_commandsOfSystem.Add(GrammarRules.JarvisStartListening.ToArray()); //Chama o jarvis
                 c_commandsOfSystem.Add(GrammarRules.JarvisStopListening.ToArray()); //Para o jarvis
+                c_commandsOfSystem.Add(GrammarRules.MinimizeWindow.ToArray());//Minimizar a janela
+                c_commandsOfSystem.Add(GrammarRules.NormalWindow.ToArray());//Janela em tamanho normal
 
                 GrammarBuilder gb_commandsOfSystem = new GrammarBuilder();
                 gb_commandsOfSystem.Append(c_commandsOfSystem);
@@ -99,6 +101,10 @@ namespace Jarvis
                                 Runner.WhatTimeIs();
                             else if (GrammarRules.WhatDateIs.Any(x => x == speech))
                                 Runner.WhatDateIs();
+                            else if (GrammarRules.MinimizeWindow.Any(x => x == speech))
+                                MinimizeWindow();
+                            else if (GrammarRules.NormalWindow.Any(x => x == speech))
+                                NormalWindow();
                             break;
                     }
                 }
@@ -115,6 +121,30 @@ namespace Jarvis
         private void rej(object s, SpeechRecognitionRejectedEventArgs e)
         {
             this.label1.ForeColor = Color.Red;
+        }
+
+        private void MinimizeWindow()
+        {
+            if (this.WindowState == FormWindowState.Normal || this.WindowState == FormWindowState.Maximized)
+            {
+                this.WindowState = FormWindowState.Minimized;
+                Speaker.Speak("Minimizando a janela", "Como quiser", "Feito", "Você que manda meu patrão.");
+            }
+            else
+            {
+                Speaker.Speak("A já está minimizada.", "Já minimizei a janela", "Já fiz isso");
+            }
+        }
+
+        private void NormalWindow()
+        {
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.WindowState = FormWindowState.Normal;
+                Speaker.Speak("Na tela", "Feito");
+            }
+            else
+                Speaker.Speak("A janela já está em tamanho normal", "Já fiz isso", "Isso já foi feito");
         }
     }
 }
