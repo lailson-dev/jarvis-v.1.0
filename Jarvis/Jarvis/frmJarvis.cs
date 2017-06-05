@@ -46,6 +46,7 @@ namespace Jarvis
                 engine.SpeechRecognized += new EventHandler<SpeechRecognizedEventArgs>(rec);
                 //Nível do audio
                 engine.AudioLevelUpdated += new EventHandler<AudioLevelUpdatedEventArgs>(audioLevel);
+                engine.SpeechRecognitionRejected += new EventHandler<SpeechRecognitionRejectedEventArgs>(rej);
 
                 //Inicia o reconhecimento
                 engine.RecognizeAsync(RecognizeMode.Multiple);
@@ -71,6 +72,7 @@ namespace Jarvis
 
             if (conf > 0.35f)
             {
+                this.label1.ForeColor = Color.ForestGreen;
                 switch (e.Result.Grammar.Name)
                 {
                     case "sys":
@@ -87,6 +89,11 @@ namespace Jarvis
         {
             this.progressBar1.Maximum = 100;
             this.progressBar1.Value = e.AudioLevel;
+        }
+
+        private void rej(object s, SpeechRecognitionRejectedEventArgs e)
+        {
+            this.label1.ForeColor = Color.Red;
         }
     }
 }
